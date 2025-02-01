@@ -22,7 +22,7 @@ let items = [
 ];
 
 async function getItems() {
-  const result = await db.query("SELECT * FROM items;");
+  const result = await db.query("SELECT * FROM items WHERE completed = FALSE ORDER BY id ASC;");
   return result.rows;
 }
 
@@ -85,7 +85,7 @@ app.post("/check-off", async (req, res) => {
 
 
 app.post("/delete", async (req, res) => {
-  
+
 });
 
 app.listen(port, () => {

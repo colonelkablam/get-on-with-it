@@ -1,3 +1,10 @@
+/* Apply border-box to all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   background-color: #121212;
   min-height: 1000px;
@@ -23,21 +30,39 @@ h1 {
   font-weight: bold;
 }
 
-.box {
-  max-width: 450px;
-  margin: 50px auto;
-  background: #1e1e1e;
-  border-radius: 8px;
-  box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.6);
-}
+  /* Center the boxes side by side */
+  .box-container {
+    display: flex;
+    justify-content: center;      /* centers boxes horizontally */
+    align-items: flex-start;      /* aligns boxes at the top */
+    gap: 20px;                    /* space between the boxes */
+    width: 70%;                   /* adjust as needed */
+    margin: 20px auto;            /* centers the container in the page */
+  }
 
-.box {
-  max-width: 450px;
-  margin: 50px auto;
-  background: #1e1e1e;
-  border-radius: 8px;
-  box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.6);
-}
+  /* General box styling */
+  .box {
+    flex: 1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    background-color: #1e1e1e;
+  }
+
+  /* Specific styling for the to-do list box */
+  #to-do {
+    background-color: #1e1e1e;
+  }
+
+  /* Specific styling for the done list box */
+  #done {
+    background-color: #5f5e5e; /* a light gray background */
+  }
+
+  /* Styling for items in the done list: gray text with strikethrough */
+  #done p {
+    color: #888;
+    text-decoration: line-through;
+  }
 
 #heading {
   background-color: #6200ea;
@@ -58,8 +83,22 @@ form.edit {
   transition: background 0.3s ease;
 }
 
-.item:last-child {
-  border-bottom: 0;
+.centre {
+  flex: 1;
+  text-align: justify;
+}
+
+.box-container .item:first-of-type {
+  border-top: 1px solid #292929;
+}
+
+.box-container .item:last-child {
+  border-bottom: 0px;
+}
+
+.item.end-of-list {
+  border-top: 0px !important;
+  padding-left: 20px;
 }
 
 .item:hover {
@@ -81,7 +120,7 @@ p {
 
 form {
   text-align: center;
-  margin-left: 20px;
+  margin-left: 0px;
 }
 
 button.add {
@@ -103,8 +142,8 @@ button.add:hover {
 }
 
 button.edit {
-  margin-left: 0px;
-  margin-right: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
   border: none;
   background: none;
   cursor: pointer;
@@ -112,6 +151,22 @@ button.edit {
 
 .icon {
   height: 20px;
+  width: auto; /* Maintains the aspect ratio */
+}
+
+.icon.add {
+  height: 40px;
+  width: auto; /* Maintains the aspect ratio */
+}
+
+.icon.check {
+  transition: transform 0.3s ease;
+  transform-origin: center;
+
+}
+
+.icon.check:hover {
+  transform: scale(1.3); /* Scales the icon to 120% of its original size */
 }
 
 input[type="text"] {
@@ -121,7 +176,7 @@ input[type="text"] {
   background: transparent;
   font-size: 20px;
   font-weight: 200;
-  width: 80%;
+  width: 100%;
   color: #e0e0e0;
 }
 
