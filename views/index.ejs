@@ -7,9 +7,9 @@
   </div>
   <div class="box">
     <% for(let item of listItems){%>
-      <div class="item">
-        <form action="/delete" method="post">
-          <input type="checkbox" onchange="this.form.submit()" name="deleteItemId" value="<%= item.id %>">
+      <div class="item" id="to-do">
+        <form action="/check-off" method="post">
+          <input type="checkbox" onchange="this.form.submit()" name="checkOffItemId" value="<%= item.id %>">
         </form>
 
         <p id="title<%=item.id%>">
@@ -20,19 +20,45 @@
           <input type="hidden" name="updatedItemId" value="<%= item.id %>">
           <input id="input<%=item.id%>" type="text" name="updatedItemTitle" value="<%= item.title %>" autocomplete="off"
             autofocus="true" hidden="true" />
-          <button id="done<%=item.id%>" class="edit" type="submit" hidden><img class="icon"
-              src="/assets/icons/check-solid.svg" alt="tick image"></button>
+          <button id="done<%=item.id%>" class="edit" type="submit" hidden>
+            <img class="icon" src="/assets/icons/save-edit.svg" alt="save image">
+          </button>
         </form>
-        <button id="edit<%=item.id%>" class="edit" onclick="handler('<%=item.id%>')"><img class="icon"
-            src="/assets/icons/pencil-solid.svg" alt="pencil image"></button>
+        <button id="edit<%=item.id%>" class="edit" onclick="handler('<%=item.id%>')">
+          <img class="icon" src="/assets/icons/edit-note.svg" alt="edit image">
+        </button>
       </div>
       <% } %>
 
-        <form class="item" action="/add" method="post">
-          <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" />
-          <button class="add" type="submit" name="list" value=<%=listTitle %> >+</button>
-        </form>
-  </div>
+      <form class="item" action="/add" method="post">
+        <input type="text" name="newItemText" placeholder="<%= locals.error ? error : 'New Item' %>" autocomplete="off" autofocus="true" />
+        <button class="add" type="submit" name="list" value=<%=listTitle %> >+</button>
+      </form>
+    </div>
+
+    <div class="box" id="done">
+      <% for(let item of completedListItems){%>
+        <div class="item">
+          <form class="delete" action="/delete" method="post">
+            <input type="hidden" name="deleteItemId" value="<%= item.id %>">
+            <button id="delete<%=item.id%>" class="edit" type="submit" >
+              <img class="icon" src="/assets/icons/delete.svg" alt="save image">
+            </button>
+          </form>
+
+          <p id="title<%=item.id%>">
+            <%= item.title %>
+          </p>
+
+          <form class="edit" action="/return" method="post">
+            <button id="return<%=item.id%>" class="edit" type="submit" >
+              <img class="icon" src="/assets/icons/return.svg" alt="save image">
+            </button>
+          </form>
+        </div>
+        <% } %>
+  
+      </div>
 
   <script>
     function handler(id) {

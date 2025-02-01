@@ -26,29 +26,67 @@ async function getItems() {
   return result.rows;
 }
 
+async function getCompletedItems() {
+  const result = await db.query("SELECT * FROM items WHERE completed = TRUE;");
+  return result.rows;
+}
+
+async function addItem(title) {
+  const result = await db.query("INSERT INTO items (title) VALUES ($1) RETURNING *;",
+    [title]
+  );
+  return result.rows;
+}
+
+async function editItem(id, newTitle) {
+  const result = await db.query("UPDATE items SET title = $1 WHERE id = $2;",
+    [newTitle, id]
+  );
+  return result.rows;
+}
+
 app.get("/", async (req, res) => {
   items = await getItems();
-
-  console.log(typeof(items), items);
+  const completedItems = await getCompletedItems();
+  const error = req.query.error; // Get error from query params
 
   res.render("index.ejs", {
     listTitle: "Today",
     listItems: items,
+    completedListItems: completedItems,
+    error: error,
   });
 });
 
-app.post("/add", (req, res) => {
-  const item = req.body.newItem;
-  items.push({ title: item });
-  res.redirect("/");
+app.post("/add", async (req, res) => {
+  const itemText = req.body.newItemText;
+
+  if (itemText) {
+    const result = await addItem(itemText);
+    res.redirect("/");
+  } else {
+    res.redirect("/?error=Please enter some text");
+  }
+
 });
 
-app.post("/edit", (req, res) => {
-
+app.post("/edit", async (req, res) => {
+  const updatedItemTitle = req.body.updatedItemTitle;
+  const itemId = req.body.updatedItemId;
+  console.log(itemId, updatedItemTitle);
+  await editItem(itemId, updatedItemTitle);
+  res.redirect("/");
   
 });
 
-app.post("/delete", (req, res) => {});
+app.post("/check-off", async (req, res) => {
+
+});
+
+
+app.post("/delete", async (req, res) => {
+  
+});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
