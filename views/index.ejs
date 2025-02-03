@@ -1,10 +1,25 @@
 <%- include('partials/header.ejs'); -%>
 
+<div class="page-container">
+
   <div class="box" id="heading">
-    <h1>
-      <%= listTitle %>
-    </h1>
+    <form method="GET" action="/">
+        <input type="hidden" name="date" value="<%= prevDate %>">
+        <button type="submit" class="edit">
+          <img class="icon change-day" title="previous day" src="/assets/icons/prev-day.svg" alt="previous day arrow">
+        </button>
+    </form>
+
+    <h1><%= formattedDate %></h1>
+
+    <form method="GET" action="/">
+        <input type="hidden" name="date" value="<%= nextDate %>">
+        <button type="submit" class="edit">
+          <img class="icon change-day" title="next day" src="/assets/icons/next-day.svg" alt="next day arrow">
+        </button>
+    </form>
   </div>
+
   <div class="box-container">
     <div class="box" id="to-do">
       <h2>Things to get on with</h2>
@@ -21,22 +36,26 @@
             <%= item.title %>
           </p>
 
-          <form class="edit" action="/edit" method="post">
+          <form class="edit" id="editedTextForm<%=item.id%>" action="/edit" method="post">
             <input type="hidden" name="updatedItemId" value="<%= item.id %>">
             <input id="input<%=item.id%>" class="center" type="text" name="updatedItemTitle" value="<%= item.title %>" autocomplete="off"
               autofocus="true" hidden="true" />
-            <button id="done<%=item.id%>" title="save changes" class="edit" type="submit" hidden>
-              <img class="icon" src="/assets/icons/save-edit.svg" alt="save image">
-            </button>
+
           </form>
+
+          <button id="done<%=item.id%>" title="save changes" class="edit save-button" onclick="submitEditedTextForm('<%=item.id%>')" hidden>
+            <img class="icon" src="/assets/icons/save-edit.svg" alt="save image">
+          </button>
+          
           <button id="edit<%=item.id%>" title="edit item" class="edit" onclick="handler('<%=item.id%>')">
             <img class="icon" src="/assets/icons/edit-note.svg" alt="edit image">
           </button>
+
         </div>
       <% } %>
       <form class="item end-of-list" action="/add" method="post">
         <input class="centre" type="text" name="newItemText" placeholder="<%= locals.error ? error : 'New Item' %>" autocomplete="off" autofocus="true" />
-        <button class="edit" type="submit" title="add to list" name="list" value=<%=listTitle %> >
+        <button class="edit" type="submit" title="add to list" name="list" >
           <img class="icon add" src="/assets/icons/add.svg" alt="add image">
         </button>
       </form>
@@ -62,20 +81,26 @@
           </form>
         </div>
       <% } %>
-      <form class="item end-of-list" action="/delete-all-completed" method="post">
-        <input type="text" name="newItemText" placeholder="<%= locals.error ? error : 'New Item' %>" autocomplete="off" autofocus="true" />
-        <button class="add" type="submit" name="list" value=<%=listTitle %> >+</button>
-      </form>
+
     </div>
   </div>
+</div>
+
 
   <script>
+    // Function to change to input box and save button edit button is clicked
     function handler(id) {
       document.getElementById("title" + id).setAttribute("hidden", true)
       document.getElementById("edit" + id).setAttribute("hidden", true)
       document.getElementById("done" + id).removeAttribute("hidden")
       document.getElementById("input" + id).removeAttribute("hidden")
     }
+
+    // Function to submit the form when save button is clicked
+    function submitEditedTextForm(id) {
+      document.getElementById(`editedTextForm${id}`).submit();
+    }
+
   </script>
   
   <%- include('partials/footer.ejs'); -%>
