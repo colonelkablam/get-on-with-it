@@ -10,7 +10,13 @@
         </button>
     </form>
 
-    <h1><%= formattedDate %></h1>
+    <h1>
+      <% if (formattedDate.startsWith("TODAY")) { %>
+          <span class="highlight-today">TODAY</span> <%= formattedDate.slice(6) %>
+      <% } else { %>
+          <%= formattedDate %>
+      <% } %>
+    </h1>
 
     <form method="GET" action="/">
         <input type="hidden" name="date" value="<%= nextDate %>">
@@ -25,8 +31,9 @@
       <h2>Things to get on with</h2>
       <% for(let item of listItems){%>
         <div class="item">
-          <form action="/check-off" method="post">
+          <form action="/check-off" method="post" class="edit">
             <input type="hidden" name="checkOffItemId" value="<%= item.id %>">
+            <input type="hidden" name="date" value="<%= date %>">
             <button id="checkOff<%=item.id%>" class="edit" type="submit" >
               <img class="icon check" title="check off item!" src="/assets/icons/tick.svg" alt="save image">
             </button>
@@ -36,14 +43,13 @@
             <%= item.title %>
           </p>
 
-          <form class="edit" id="editedTextForm<%=item.id%>" action="/edit" method="post">
+          <form class="centre" id="editedTextForm<%=item.id%>" action="/edit" method="post" hidden="true">
             <input type="hidden" name="updatedItemId" value="<%= item.id %>">
-            <input id="input<%=item.id%>" class="center" type="text" name="updatedItemTitle" value="<%= item.title %>" autocomplete="off"
+            <input id="input<%=item.id%>" class="centre" type="text" name="updatedItemTitle" value="<%= item.title %>" autocomplete="off"
               autofocus="true" hidden="true" />
-
           </form>
 
-          <button id="done<%=item.id%>" title="save changes" class="edit save-button" onclick="submitEditedTextForm('<%=item.id%>')" hidden>
+          <button id="done<%=item.id%>" title="save changes" class="edit" onclick="submitEditedTextForm('<%=item.id%>')" hidden="true">
             <img class="icon" src="/assets/icons/save-edit.svg" alt="save image">
           </button>
           
@@ -54,11 +60,12 @@
         </div>
       <% } %>
       <form class="item end-of-list" action="/add" method="post">
-        <input class="centre" type="text" name="newItemText" placeholder="<%= locals.error ? error : 'New Item' %>" autocomplete="off" autofocus="true" />
-        <button class="edit" type="submit" title="add to list" name="list" >
-          <img class="icon add" src="/assets/icons/add.svg" alt="add image">
+        <input type="hidden" name="date" value="<%= date %>">
+        <input class="centre" type="text" name="newItemText" placeholder="New Item" autocomplete="off" autofocus="true">
+        <button class="edit" type="submit" title="add to list">
+            <img class="icon add" src="/assets/icons/add.svg" alt="add image">
         </button>
-      </form>
+    </form>
     </div>
     <div class="box" id="done">
       <h2>Completed things</h2>
@@ -67,6 +74,7 @@
         <div class="item">
           <form class="delete" action="/delete" method="post">
             <input type="hidden" name="deleteItemId" value="<%= item.id %>">
+            <input type="hidden" name="date" value="<%= date %>">
             <button id="delete<%=item.id%>" class="edit" type="submit" >
               <img class="icon" src="/assets/icons/delete.svg" alt="save image">
             </button>
@@ -74,7 +82,9 @@
             <p id="title<%=item.id%>" class="centre">
               <%= item.title %>
             </p>
-          <form class="edit" action="/return" method="post">
+          <form class="edit" action="/return-item" method="post">
+            <input type="hidden" name="returnItemId" value="<%= item.id %>">
+            <input type="hidden" name="date" value="<%= date %>">
             <button id="return<%=item.id%>" class="edit" type="submit" >
               <img class="icon" src="/assets/icons/return.svg" alt="save image">
             </button>
@@ -90,11 +100,42 @@
   <script>
     // Function to change to input box and save button edit button is clicked
     function handler(id) {
-      document.getElementById("title" + id).setAttribute("hidden", true)
-      document.getElementById("edit" + id).setAttribute("hidden", true)
-      document.getElementById("done" + id).removeAttribute("hidden")
-      document.getElementById("input" + id).removeAttribute("hidden")
-    }
+      let input = document.getElementById("input" + id);
+      let title = document.getElementById("title" + id);
+      let editButton = document.getElementById("edit" + id);
+      let saveButton = document.getElementById("done" + id);
+      let editForm = document.getElementById("editedTextForm" + id);
+      let originalText = input.value; // Store original text
+
+      // Make elements visible and hide others
+      title.hidden = true;
+      editButton.hidden = true;
+      editForm.hidden = false;
+      input.hidden = false;
+      saveButton.hidden = false;
+
+      // Add event listener to submit form when input loses focus (only if text changed)
+      input.addEventListener("blur", function () {
+          if (input.value.trim() !== originalText.trim()) { // Submit only if text changed
+              submitEditedTextForm(id);
+          } else {
+              // Restore original state if no changes
+              title.hidden = false;
+              editButton.hidden = false;
+              editForm.hidden = true;
+              input.hidden = true;
+              saveButton.hidden = true;
+          }
+      });
+
+      // Ensure the input is fully visible before focusing
+      setTimeout(() => {
+          input.focus();
+          input.setSelectionRange(input.value.length, input.value.length); // Move cursor to end
+      }, 0);
+    } 
+
+
 
     // Function to submit the form when save button is clicked
     function submitEditedTextForm(id) {
