@@ -4,7 +4,6 @@ import pg from "pg";
 
 const app = express();
 const port = 3000;
-const date = new Date().toISOString().split('T')[0]; // Get YYYY-MM-DD format
 
 const db = new pg.Client({
   user: "postgres",
@@ -17,6 +16,11 @@ db.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+
+async function getAllItems() {
+  const result = await db.query("SELECT * FROM items ORDER BY date ASC;" );
+  return result.rows;
+}
 
 async function getItems(date) {
   const result = await db.query("SELECT * FROM items WHERE completed = FALSE AND date = $1 ORDER BY id ASC;",
@@ -69,6 +73,29 @@ function validateAndFormatDate(inputDate) {
   // Convert date to YYYY-MM-DD format
   return { error: null, date: date.toISOString().split("T")[0] };
 }
+
+app.get("/view-list", async (req, res) => {
+  
+  const allItems = await getAllItems();
+  console.log(allItems);
+
+
+  res.render("view-list.ejs", 
+    {
+      listItems: allItems,
+      error: req.query.error,
+    }
+  );
+});
+
+app.get("/today", async (req, res) => {
+  
+  const todayDate = new Date();
+  const formattedTodayDate = todayDate.toISOString().split("T")[0];
+
+  res.redirect(`/?date=${formattedTodayDate}`);
+
+});
 
 app.get("/", async (req, res) => {
   let dateParam = req.query.date; // Get date from query param

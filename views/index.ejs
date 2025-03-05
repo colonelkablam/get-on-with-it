@@ -6,24 +6,39 @@
     <form method="GET" action="/">
         <input type="hidden" name="date" value="<%= prevDate %>">
         <button type="submit" class="edit">
-          <img class="icon change-day" title="previous day" src="/assets/icons/prev-day.svg" alt="previous day arrow">
+          <img class="icon change-day" title="previous day" src="/assets/icons/prev-day-3.svg" alt="previous day arrow">
         </button>
+    </form>
+
+    <form method="GET" action="/">
+      <input type="hidden" name="date" value="<%= nextDate %>">
+      <button type="submit" class="edit">
+        <img class="icon change-day" title="next day" src="/assets/icons/next-day-3.svg" alt="next day arrow">
+      </button>
     </form>
 
     <h1>
       <% if (formattedDate.startsWith("TODAY")) { %>
-          <span class="highlight-today">TODAY</span> <%= formattedDate.slice(6) %>
+          <span class="highlight-today"><%= formattedDate.slice(6) %>
       <% } else { %>
           <%= formattedDate %>
       <% } %>
     </h1>
 
-    <form method="GET" action="/">
-        <input type="hidden" name="date" value="<%= nextDate %>">
-        <button type="submit" class="edit">
-          <img class="icon change-day" title="next day" src="/assets/icons/next-day.svg" alt="next day arrow">
-        </button>
+    <form method="GET" action="/today">
+      <input type="hidden" name="date" value="<%= nextDate %>">
+      <button type="submit" class="edit">
+        <img class="icon change-day" title="go to today" src="/assets/icons/today.png" alt="go to today icon">
+      </button>
     </form>
+
+    <form method="GET" action="/view-list">
+      <input type="hidden" name="date" value="<%= nextDate %>">
+      <button type="submit" class="edit">
+        <img class="icon view-list" title="view list" src="/assets/icons/list.svg" alt="view list icon">
+      </button>
+    </form>
+
   </div>
 
   <div class="box-container">
