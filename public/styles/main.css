@@ -278,6 +278,15 @@ footer {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.list-item:hover {
+  transform: scale(1.03);
+  filter: brightness(1.2); /* Increase brightness by 20% */
+
 }
 
 .list-light-grey {

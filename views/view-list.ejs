@@ -24,7 +24,7 @@
                     <% let listClass = alternate ? "list-light-grey" : "list-dark-grey"; %>
                     <% if (item.isItToday) { listClass = "list-yellow" } %>
 
-                    <li class="<%= listClass %> list-item" onclick="redirectToDate('<%= item.dateURL %>')">
+                    <li class="<%= listClass %> list-item" onclick="redirectToDate('<%= item.dateURL %>')" title="Go to task day">
                         <span class="list-date"><p><%= showDate ? item.date : "-" %></p></span>
                         <span class="list-text"><p><%= item.title %></p></span>
                         <span class="list-completed"><p><%= item.completed ? "✔️" : "❌" %></p></span>

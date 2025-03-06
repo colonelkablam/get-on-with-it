@@ -48,6 +48,8 @@
         <div class="item">
           <form action="/check-off" method="post" class="edit">
             <input type="hidden" name="checkOffItemId" value="<%= item.id %>">
+            <input type="hidden" name="date" value="<%= date %>">
+
             <button id="checkOff<%=item.id%>" class="edit" type="submit" >
               <img class="icon check" title="check off item!" src="/assets/icons/tick.svg" alt="save image">
             </button>
@@ -55,6 +57,7 @@
 
           <form class="delete" action="/delete" method="post">
             <input type="hidden" name="deleteItemId" value="<%= item.id %>">
+            <input type="hidden" name="date" value="<%= date %>">
             <button id="delete<%=item.id%>a" class="edit" type="submit" hidden="true" >
               <img class="icon" src="/assets/icons/delete.svg" alt="delete image">
             </button>
@@ -95,6 +98,7 @@
         <div class="item">
           <form class="delete" action="/delete" method="post">
             <input type="hidden" name="deleteItemId" value="<%= item.id %>">
+            <input type="hidden" name="date" value="<%= date %>">
             <button id="delete<%=item.id%>" class="edit" type="submit" >
               <img class="icon" src="/assets/icons/delete.svg" alt="delete image">
             </button>
