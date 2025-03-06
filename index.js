@@ -118,6 +118,11 @@ app.get("/", async (req, res) => {
   // Format for URL and database (YYYY-MM-DD)
   const formattedDate = date.toISOString().split("T")[0];
 
+  // Work out if it is today
+  const todayDate = new Date();
+  const formattedTodayDate = todayDate.toISOString().split("T")[0];
+  const isItToday = formattedDate === formattedTodayDate;
+
   // Get previous and next dates
   let prevDate = new Date(date);
   prevDate.setDate(prevDate.getDate() - 1);
@@ -130,25 +135,32 @@ app.get("/", async (req, res) => {
 
   // Title format: "TODAY, Monday, 5 February"
   const options = { weekday: "long", day: "numeric", month: "long" };
-  const displayDate =
-      formattedDate === new Date().toISOString().split("T")[0]
-          ? "TODAY " + date.toLocaleDateString("en-GB", options)
-          : date.toLocaleDateString("en-GB", options);
+  const displayDate = date.toLocaleDateString("en-GB", options);
 
-  // Fetch items for selected date
-  const items = await getItems(formattedDate);
-  const completedItems = await getCompletedItems(formattedDate);
+  // **Predefine Empty Lists** to avoid flicker
+  let items = [];
+  let completedItems = [];
+
+  try {
+      // Fetch items for selected date
+      items = await getItems(formattedDate);
+      completedItems = await getCompletedItems(formattedDate);
+  } catch (error) {
+      console.error("Error fetching items:", error);
+  }
 
   res.render("index.ejs", {
       date: formattedDate, // Ensure YYYY-MM-DD format
       prevDate,
       nextDate,
-      formattedDate: displayDate,
-      listItems: items,
-      completedListItems: completedItems,
-      error: req.query.error,
+      formattedDate: displayDate, // Always a valid string
+      listItems: items || [], // Ensure it's always an array
+      completedListItems: completedItems || [], // Ensure it's always an array
+      isItToday: isItToday,
+      error: req.query.error || null, // Ensure error is always defined
   });
 });
+
 
 
 app.post("/add", async (req, res) => {

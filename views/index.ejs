@@ -18,10 +18,10 @@
     </form>
 
     <h1>
-      <% if (formattedDate.startsWith("TODAY")) { %>
-          <span class="highlight-today"><%= formattedDate.slice(6) %>
+      <% if (isItToday) { %>
+          <span class="highlight-today"><%= formattedDate %></span>
       <% } else { %>
-          <%= formattedDate %>
+          <span ><%= formattedDate %></span>
       <% } %>
     </h1>
 
