@@ -94,7 +94,7 @@ form.edit {
 }
 
 .item {
-  min-height: 70px;
+  min-height: 60px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid #292929;
@@ -270,12 +270,24 @@ footer {
   width: 100%;
 }
 
+.list-completed {
+  display: flex;
+  justify-content: center;
+}
+
+.list-completed>.edit.icon {
+  width: auto;
+  height:30px;
+  font-size: medium;
+}
+
 .list p {
   padding: 0.5rem;
 }
 
 .list-item {
   width: 100%;
+  min-height: 44px;
   display: flex;
   justify-content: space-between;
   cursor: pointer;
@@ -284,7 +296,7 @@ footer {
 }
 
 .list-item:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
   filter: brightness(1.2); /* Increase brightness by 20% */
 
 }
@@ -301,8 +313,23 @@ footer {
   background-color: #ffd43b;
 }
 
+.list-yellow button {
+  filter: brightness(0.6);
+}
+
 .list-yellow p {
   color: #424242;
+}
+
+.item-completed {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ffffffa2;
+
+}
+
+.item-todo {
+  text-decoration:none;
 }
 
 .list-date {

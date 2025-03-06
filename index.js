@@ -194,6 +194,20 @@ app.post("/check-off", async (req, res) => {
   res.redirect(`/?date=${date}`);
 });
 
+app.post("/check-off/view-list", async (req, res) => {
+  const itemId = req.body.checkOffItemId;
+
+  try {
+    await checkOffItem(itemId);
+    res.redirect("/view-list");
+
+  } catch (error) {
+    console.error("Error checking off item:", error); // Logs error to the console
+    res.redirect("/view-list");
+  }
+});
+
+
 app.post("/delete", async (req, res) => {
   const itemId = req.body.deleteItemId;
   const { error, date } = validateAndFormatDate(req.body.date);
@@ -218,6 +232,20 @@ app.post("/return-item", async (req, res) => {
 
   await returnItem(itemId);
   res.redirect(`/?date=${date}`);
+});
+
+app.post("/return-item/view-list", async (req, res) => {
+  const itemId = req.body.returnItemId;
+
+  try {
+    await returnItem(itemId);
+    res.redirect("/view-list");
+
+  } catch (error) {
+    console.error("Error returning item:", error); // Logs error to the console
+    res.redirect("/view-list");
+
+  }
 });
 
 app.listen(port, () => {

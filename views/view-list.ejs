@@ -10,7 +10,7 @@
             List View
         </h1>
 
-        <button class="edit" onclick="window.history.back()">
+        <button class="edit" onclick="window.location.href='/'">
           <img class="icon return-main" title="go back to main page" src="/assets/icons/return.svg" alt="return to main arrow">
         </button>
     </div>
@@ -25,9 +25,25 @@
                     <% if (item.isItToday) { listClass = "list-yellow" } %>
 
                     <li class="<%= listClass %> list-item" onclick="redirectToDate('<%= item.dateURL %>')" title="Go to task day">
-                        <span class="list-date"><p><%= showDate ? item.date : "-" %></p></span>
-                        <span class="list-text"><p><%= item.title %></p></span>
-                        <span class="list-completed"><p><%= item.completed ? "✔️" : "❌" %></p></span>
+                        <span class="list-date"><p><%= showDate ? item.date : "" %></p></span>
+                        <span class="list-text <%= item.completed ? "item-completed" : "item-todo" %>"><p><%= item.title %></p></span>
+                        <span class="list-completed">
+                            <% if (item.completed) { %>
+                                <form class="edit" action="/return-item/view-list" method="post">
+                                    <input type="hidden" name="returnItemId" value="<%= item.id %>">
+                                    <button id="return<%=item.id%>" class="edit" type="submit" title="mark as not done">
+                                      <img class="icon" src="/assets/icons/return.svg" alt="save image">
+                                    </button>
+                                </form>
+                            <% } else { %>
+                                <form action="/check-off/view-list" method="post" class="edit">
+                                    <input type="hidden" name="checkOffItemId" value="<%= item.id %>">                                
+                                    <button id="checkOff<%=item.id%>" class="edit" type="submit" title="check off item!">
+                                      <img class="icon check" src="/assets/icons/tick.svg" alt="save image">
+                                    </button>
+                                </form>
+                            <% } %> 
+                        </span>
                     </li>
                     <% showDate = false, date = item.date %>
                 <% } %>
@@ -40,6 +56,17 @@
     function redirectToDate(date) {
         window.location.href = "/?date=" + encodeURIComponent(date);
     }
+
+    function handleListButton(date, itemDone) {
+        if (itemDone) {
+
+        } else {
+
+        }
+        window.location.href = "/?date=" + encodeURIComponent(date);
+    }
+
+
 </script>
   
 <%- include('partials/footer.ejs'); -%>
