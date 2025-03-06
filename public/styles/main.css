@@ -42,7 +42,7 @@ h1 {
 }
 
 .highlight-today {
-  background-color: #ffcc00;
+  background-color: #ffd43b;
   color: #121212;
   padding: 5px 10px;
   border-radius: 5px;
@@ -177,7 +177,7 @@ button.edit {
 
 .icon.add {
   height: 40px;
-  width: auto; /* Maintains the aspect ratio */
+  width: auto;
 }
 
 .icon.check {
@@ -186,29 +186,45 @@ button.edit {
 }
 
 .icon.check:hover {
-  transform: scale(1.3); /* Scales the icon to 120% of its original size */
+  transform: scale(1.3); 
 }
 
 .icon.change-day {
   height: 40px;
-  width: auto; /* Maintains the aspect ratio */
+  width: auto; 
   transition: transform 0.3s ease;
   transform-origin: center;
 }
 
 .icon.change-day:hover {
-  transform: scale(1.3); /* Scales the icon to 120% of its original size */
+  transform: scale(1.3); 
 }
 
 .icon.view-list {
   height: 40px;
-  width: auto; /* Maintains the aspect ratio */
+  width: auto; 
   transition: transform 0.3s ease;
   transform-origin: center;
 }
 
 .icon.view-list:hover {
-  transform: scale(1.3); /* Scales the icon to 120% of its original size */
+  transform: scale(1.3); 
+}
+
+.icon.return-main {
+  height: 40px;
+  width: auto; 
+  transition: transform 0.3s ease;
+  transform-origin: center;
+}
+
+.icon.return-main:hover {
+  transform: scale(1.3); 
+}
+
+.empty-button-container {
+  width: 40px;
+  margin: 0 10px;
 }
 
 form input:focus {
@@ -246,4 +262,56 @@ footer {
   padding: 10px;
   background-color: #1e1e1e;
   border-radius: 6px;
+}
+
+.list {
+  list-style: none;
+  padding: 1rem;
+  margin: 0;
+  width: 100%;
+}
+
+.list p {
+  padding: 0.5rem;
+}
+
+.list-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.list-light-grey {
+  background-color: #5c5c5c;
+}
+
+.list-dark-grey {
+  background-color: #424242;
+}
+
+.list-yellow {
+  background-color: #ffd43b;
+}
+
+.list-yellow p {
+  color: #424242;
+}
+
+.list-date {
+  width: 10rem;
+  align-items:center;
+}
+
+.list-text {
+  flex: 1;
+}
+
+.list-text p {
+text-align: left;
+}
+
+.list-completed {
+  align-items:center;
+  width: 5rem;
+
 }

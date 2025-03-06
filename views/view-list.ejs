@@ -2,21 +2,44 @@
 
 <div class="page-container">
 
-  <div class="box" id="heading">
-    <h1>
-        List View
-    </h1>
-  </div>
+    <div class="box" id="heading">
+        <span class="edit empty-button-container">
+        </span>
 
-  <div class="box-container">
+        <h1>
+            List View
+        </h1>
 
-  </div>
+        <button class="edit" onclick="window.history.back()">
+          <img class="icon return-main" title="go back to main page" src="/assets/icons/return.svg" alt="return to main arrow">
+        </button>
+    </div>
+
+    <div class="box-container">
+        <div class="box">
+            <ul class="list">
+                <% let alternate = true, showDate = false, date=null %>
+                <% for (let item of listItems) { %>
+                    <% if (date !== item.date) {showDate = true; alternate = !alternate } %>
+                    <% let listClass = alternate ? "list-light-grey" : "list-dark-grey"; %>
+                    <% if (item.isItToday) { listClass = "list-yellow" } %>
+
+                    <li class="<%= listClass %> list-item" onclick="redirectToDate('<%= item.dateURL %>')">
+                        <span class="list-date"><p><%= showDate ? item.date : "-" %></p></span>
+                        <span class="list-text"><p><%= item.title %></p></span>
+                        <span class="list-completed"><p><%= item.completed ? "✔️" : "❌" %></p></span>
+                    </li>
+                    <% showDate = false, date = item.date %>
+                <% } %>
+            </ul>
+        </div>
+    </div>
 </div>
 
-
-  <script>
-
-
-  </script>
+<script>
+    function redirectToDate(date) {
+        window.location.href = "/?date=" + encodeURIComponent(date);
+    }
+</script>
   
-  <%- include('partials/footer.ejs'); -%>
+<%- include('partials/footer.ejs'); -%>

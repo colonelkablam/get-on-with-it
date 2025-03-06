@@ -76,9 +76,18 @@ function validateAndFormatDate(inputDate) {
 
 app.get("/view-list", async (req, res) => {
   
-  const allItems = await getAllItems();
-  console.log(allItems);
+  let allItems = await getAllItems();
+  let todayDate = new Date();
 
+  for (let item of allItems) {
+    item.dateURL = item.date.toISOString().split("T")[0]
+    item.isItToday = item.dateURL === todayDate.toISOString().split("T")[0]
+    const options = { weekday: "short", day: "numeric", month: "long" };
+    let formattedDate = item.date.toLocaleDateString("en-GB", options);
+    item.date =  formattedDate;
+  }
+
+  console.log(allItems);
 
   res.render("view-list.ejs", 
     {
