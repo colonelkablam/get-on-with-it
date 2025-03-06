@@ -48,9 +48,15 @@
         <div class="item">
           <form action="/check-off" method="post" class="edit">
             <input type="hidden" name="checkOffItemId" value="<%= item.id %>">
-            <input type="hidden" name="date" value="<%= date %>">
             <button id="checkOff<%=item.id%>" class="edit" type="submit" >
               <img class="icon check" title="check off item!" src="/assets/icons/tick.svg" alt="save image">
+            </button>
+          </form>
+
+          <form class="delete" action="/delete" method="post">
+            <input type="hidden" name="deleteItemId" value="<%= item.id %>">
+            <button id="delete<%=item.id%>a" class="edit" type="submit" hidden="true" >
+              <img class="icon" src="/assets/icons/delete.svg" alt="delete image">
             </button>
           </form>
 
@@ -89,9 +95,8 @@
         <div class="item">
           <form class="delete" action="/delete" method="post">
             <input type="hidden" name="deleteItemId" value="<%= item.id %>">
-            <input type="hidden" name="date" value="<%= date %>">
             <button id="delete<%=item.id%>" class="edit" type="submit" >
-              <img class="icon" src="/assets/icons/delete.svg" alt="save image">
+              <img class="icon" src="/assets/icons/delete.svg" alt="delete image">
             </button>
           </form>
             <p id="title<%=item.id%>" class="centre">
@@ -117,24 +122,40 @@
     function handler(id) {
       let input = document.getElementById("input" + id);
       let title = document.getElementById("title" + id);
+      let checkOffButton = document.getElementById("checkOff" + id);
+      let deleteButtonA = document.getElementById("delete" + id + 'a');
       let editButton = document.getElementById("edit" + id);
       let saveButton = document.getElementById("done" + id);
       let editForm = document.getElementById("editedTextForm" + id);
       let originalText = input.value; // Store original text
+      let preventBlur = false; // Flag to prevent blur when clicking buttons
 
       // Make elements visible and hide others
+      deleteButtonA.hidden = false;
+      checkOffButton.hidden = true;
       title.hidden = true;
       editButton.hidden = true;
       editForm.hidden = false;
       input.hidden = false;
-      saveButton.hidden = false;
+      saveButton.hidden = false; // Save button remains hidden?
 
-      // Add event listener to submit form when input loses focus (only if text changed)
+      // Prevent blur when clicking Save or Delete
+      deleteButtonA.addEventListener("mousedown", () => preventBlur = true);
+      saveButton.addEventListener("mousedown", () => preventBlur = true);
+
+      // Add event listener to handle blur properly
       input.addEventListener("blur", function () {
-          if (input.value.trim() !== originalText.trim()) { // Submit only if text changed
+          if (preventBlur) {
+              preventBlur = false; // Reset flag to allow normal blur later
+              return; // Do not hide elements if blur was caused by clicking a button
+          }
+
+          if (input.value.trim() !== originalText.trim()) {
               submitEditedTextForm(id);
           } else {
               // Restore original state if no changes
+              deleteButtonA.hidden = true;
+              checkOffButton.hidden = false;
               title.hidden = false;
               editButton.hidden = false;
               editForm.hidden = true;
@@ -148,8 +169,7 @@
           input.focus();
           input.setSelectionRange(input.value.length, input.value.length); // Move cursor to end
       }, 0);
-    } 
-
+    }
 
 
     // Function to submit the form when save button is clicked

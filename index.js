@@ -198,6 +198,8 @@ app.post("/delete", async (req, res) => {
   const itemId = req.body.deleteItemId;
   const { error, date } = validateAndFormatDate(req.body.date);
 
+  console.log("delete item: ", itemId)
+
   if (error) {
       return res.redirect(`/?error=${error}`);
   }
