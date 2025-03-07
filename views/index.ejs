@@ -6,14 +6,14 @@
     <form method="GET" action="/">
         <input type="hidden" name="date" value="<%= prevDate %>">
         <button type="submit" class="edit">
-          <img class="icon change-day" title="previous day" src="/assets/icons/prev-day-3.svg" alt="previous day arrow">
+          <img class="icon change-day" title="previous day" src="/assets/icons/prev-day-3.svg" alt="previous day arrow" width="40" height="40" fetchpriority="high">
         </button>
     </form>
 
     <form method="GET" action="/">
       <input type="hidden" name="date" value="<%= nextDate %>">
       <button type="submit" class="edit">
-        <img class="icon change-day" title="next day" src="/assets/icons/next-day-3.svg" alt="next day arrow">
+        <img class="icon change-day" title="next day" src="/assets/icons/next-day-3.svg" alt="next day arrow" width="40" height="40" fetchpriority="high">
       </button>
     </form>
 
@@ -28,14 +28,14 @@
     <form method="GET" action="/today">
       <input type="hidden" name="date" value="<%= nextDate %>">
       <button type="submit" class="edit">
-        <img class="icon change-day" title="go to today" src="/assets/icons/today.png" alt="go to today icon">
+        <img class="icon change-day" title="go to today" src="/assets/icons/today.png" alt="go to today icon" width="40" height="40" fetchpriority="high">
       </button>
     </form>
 
     <form method="GET" action="/view-list">
       <input type="hidden" name="date" value="<%= nextDate %>">
       <button type="submit" class="edit">
-        <img class="icon view-list" title="view list" src="/assets/icons/list.svg" alt="view list icon">
+        <img class="icon view-list" title="view list" src="/assets/icons/list.svg" alt="view list icon" width="40" height="40" fetchpriority="high">
       </button>
     </form>
 

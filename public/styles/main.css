@@ -24,6 +24,12 @@ main {
   flex: 1 0 auto;
 }
 
+h1 {
+  text-align: center;
+  flex-grow: 1; /* Ensures it stays centered */
+  margin: 5px 0;
+}
+
 #heading {
   display: flex;
   align-items: center;
@@ -35,11 +41,7 @@ main {
   text-align: center;
 }
 
-h1 {
-  text-align: center;
-  flex-grow: 1; /* Ensures it stays centered */
-  margin: 5px 0;
-}
+
 
 .highlight-today {
   background-color: #ffd43b;

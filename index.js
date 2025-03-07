@@ -115,23 +115,24 @@ app.get("/", async (req, res) => {
       date = new Date(); // Default to today if invalid
   }
 
-  // Format for URL and database (YYYY-MM-DD)
-  const formattedDate = date.toISOString().split("T")[0];
+  // Format for URL and database (YYYY-MM-DD) using local time
+  const formattedDate = date.toLocaleDateString("en-CA"); // Ensures YYYY-MM-DD format in local time
 
   // Work out if it is today
   const todayDate = new Date();
-  const formattedTodayDate = todayDate.toISOString().split("T")[0];
+  const formattedTodayDate = todayDate.toLocaleDateString("en-CA");
   const isItToday = formattedDate === formattedTodayDate;
 
   // Get previous and next dates
   let prevDate = new Date(date);
   prevDate.setDate(prevDate.getDate() - 1);
+
   let nextDate = new Date(date);
   nextDate.setDate(nextDate.getDate() + 1);
 
-  // Convert to YYYY-MM-DD
-  prevDate = prevDate.toISOString().split("T")[0];
-  nextDate = nextDate.toISOString().split("T")[0];
+  // Convert to YYYY-MM-DD using local time to prevent timezone issues
+  prevDate = prevDate.toLocaleDateString("en-CA");
+  nextDate = nextDate.toLocaleDateString("en-CA");
 
   // Title format: "TODAY, Monday, 5 February"
   const options = { weekday: "long", day: "numeric", month: "long" };
@@ -160,6 +161,7 @@ app.get("/", async (req, res) => {
       error: req.query.error || null, // Ensure error is always defined
   });
 });
+
 
 
 
